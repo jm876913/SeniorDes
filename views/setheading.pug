@@ -1,0 +1,103 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Course Position
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/programofstudy.css')
+  body.text-center(style='')
+    // Navbar
+    .py-5.section-aquamarine(style='background-image: url(/assets/programofstudybackground.jpg);	background-position: left top;	background-size: 100%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            h1.display-1.shadow-lg.text-center.text-white Catalog Course Layout
+            h1 Program Of Study Heading Layout
+    // Cover
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-info
+      .container
+        button.navbar-toggler.navbar-toggler-right.border-0.p-0(type='button', data-toggle='collapse', data-target='#navbar14')
+          p.navbar-brand.mb-0.text-white
+            i.fa.d-inline.fa-lg.fa-bars
+            |  MENU
+        #navbar14.collapse.navbar-collapse
+          a.navbar-brand.d-none.d-md-block
+            b ETM
+          ul.navbar-nav.mx-auto
+            li.nav-item
+              a.nav-link(href='/courseedit/index')
+                i.fa.fa-pencil.fa-fw
+                | Catalog Layout Index
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link(href='/houme')
+                i.fa.fa-home.fa-fw
+                | Home
+            li.nav-item
+              a.nav-link.text-primary(href='/') 
+                i.fa.fa-power-off.fa-fw
+                | Logout
+    form(method='POST', action='/courseedit/heading', id='setcourse')
+      .py-5
+        .container
+          .row
+            .col-md-6
+          .row
+            .table-responsive
+              table.table.table-striped.table-borderless.table-sm
+                thead.thead-dark
+                  tr(align="left")
+                    th Catalog Year
+                    th Heading
+                    th Position
+                tbody
+                  each heading in headings
+                    tr(align="left")
+                      td
+                        label #{heading.catalogyear}
+                        input(type='hidden', name='catalog[]', placeholder='catalog', value=heading.catalogyear)
+                      td 
+                        input(type='text', name='heading[]', placeholder='Position', value=heading.heading)
+                      td
+                        u
+                          select(name='position[]', placeholder='', value=heading.position)
+                              option(selected='selected') #{heading.position}
+                              option 0
+                              option 1
+                              option 2
+                              option 3
+                              option 4
+                              option 5
+                              option 6
+
+      input.btn.btn-primary.btn-md.px-3(type='submit', value='Submit', form='setcourse', style='cursor:pointer;position: fixed;bottom: 20px;right:20px;padding:4px; width:220px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white')                       
+    // Parallax section
+    // Speakers
+    // Schedule
+    // Sponsor logos
+    // Call to action
+    // Footer
+    footer.text-md-left.text-center.p-4.bg-dark.text-light
+      .container
+        .row
+          .col-lg-12  
+        .row
+          .col-md-12
+            p.text-muted.text-center
+              br
+              br
+              | © Copyright 2019 WCF - All rights reserved.
+    // JavaScript dependencies
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    // Script: Smooth scrolling between anchors in the same page
+    script(src='/js/smooth-scroll.js', style='')

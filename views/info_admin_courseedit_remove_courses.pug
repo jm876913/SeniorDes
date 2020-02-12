@@ -1,0 +1,74 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Help Pages
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/programofstudy.css')
+  body.text-center
+    // Navbar
+    // Cover
+    // Parallax section
+    // Speakers
+    // Schedule
+    // Sponsor logos
+    // Call to action
+    // Footer
+    // JavaScript dependencies
+    .py-5.section-aquamarine(style='	background-image: url(/assets/programofstudybackground.jpg);	background-position: left top;	background-size: 70%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            h1.display-6.shadow-lg.text-center.text-white Help Pages
+            h5 The Program Of Study Remove Course
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-info
+      .container
+        button.navbar-toggler.navbar-toggler-right.border-0.p-0(type='button', data-toggle='collapse', data-target='#navbar12')
+          p.navbar-brand.mb-0.text-white
+            i.fa.d-inline.fa-lg.fa-bars
+            |  MENU
+        #navbar12.collapse.navbar-collapse
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link(href='/houme/admin')
+                i.fa.fa-home.fa-fw
+                | ETM
+          ul.navbar-nav.mx-auto
+            li.nav-item
+              a.nav-link(href='/admincourseedit/remove')
+                i.fa.fa-minus.fa-fw
+                | Remove Course
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link.text-primary(href='/') 
+                i.fa.fa-power-off.fa-fw
+                | Logout
+    .py-5
+      .container
+        .row
+          .col-md-12
+            h1 Removing a Course
+            h5 When removing a course you must be aware of what that means. When you hit delete the course will be remove completely from the database. This means it will not only be removed from course data but it will also be removed from any students who have data associated with that course. The better option would be to use the Course Add feature with the same catalog year and course code and change the values you wish. Courses will also be re-added when DARS reports are passed in through the 'Add Student' feature.
+
+footer.text-md-left.text-center.p-4.bg-dark.text-light
+  .container
+    .row
+      .col-lg-12  
+    .row
+      .col-md-12
+        p.text-muted.text-center
+          br
+          br
+          | © Copyright 2019 WillCodeForFood - All rights reserved.
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    // Script: Smooth scrolling between anchors in the same page

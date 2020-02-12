@@ -1,0 +1,885 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Program Of Study
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/programofstudy.css')
+  body.text-center(style='')
+    - var m = new Date();
+    - var meetingdate = m.getUTCFullYear() +"-"+ (m.getUTCMonth()+1) +"-"+ m.getUTCDate() + " " + ((m.getHours() % 12 || 12) < 10 ? '0' : '') + (m.getHours() % 12 || 12) + ":" + (m.getMinutes()<10?'0':'') + m.getMinutes();
+    
+    script(type='text/javascript').
+      window.onload = function() {
+        if(#{student_standing} == true){
+            document.getElementById('Astanding').style.color = "#008000";
+            document.getElementById("AS").checked = true;
+          }
+        else{
+          document.getElementById('Astanding').style.color = "#FF0000";
+          document.getElementById("AS").checked = false;
+        }
+        
+        //- var get_gpa = calculate_gpa();
+        //- document.getElementById("ou_gpa").innerHTML = get_gpa.gpa.toFixed(4);
+        //- document.getElementById("total_credits").innerHTML = get_gpa.credits.toFixed(4);
+        calculate_grade_stuff();
+      }
+    // Navbar
+    .py-5.section-aquamarine(style='	background-image: url(/assets/programofstudybackground.jpg);	background-position: left top;	background-size: 60%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            h1.display-6.shadow-lg.text-center.text-white Program Of Study
+    // Cover
+    a.btn.btn-primary.text-white(href='/info/programofstudy/' + id_student, style='font-weight: bold; cursor:pointer;position: absolute;top: 20px;right:20px;padding:4px;border-radius: 8px; width:30px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white')
+      i.fa.fa-info-circle.fa-fw
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-info
+      .container
+        button.navbar-toggler.navbar-toggler-right.border-0.p-0(type='button', data-toggle='collapse', data-target='#navbar12')
+          p.navbar-brand.mb-0.text-white
+            i.fa.d-inline.fa-lg.fa-bars
+            |  MENU
+        #navbar12.collapse.navbar-collapse
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link(href='/houme')
+                i.fa.fa-home.fa-fw
+                | ETM
+          ul.navbar-nav.mx-auto
+            li.nav-item
+              a.nav-link(href='/programofstudy/' + id_student)
+                i.fa.fa-book.fa-fw
+                | Program Of Study
+            li.nav-item
+              a.nav-link(href='/programplanner/' + id_student)
+                i.fa.fa-line-chart.fa-fw
+                | Program Planner
+            li.nav-item
+              a.nav-link(href='/courseloadingview/' + id_student)
+                i.fa.fa-columns.fa-fw
+                | Course Catalog
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link.text-primary(href='/') 
+                i.fa.fa-power-off.fa-fw
+                | Logout
+    form.p-2(method='POST', action='/programofstudy', id='coursesave')
+      .py-5(style='')
+        .container
+          .row
+            .col-md-12
+              h2.display-6 ETM Bachelor Of Science
+              .row
+                .col-md-6
+                  h2.display-6 Student Information
+                .col-md-6
+                  h2.display-6 Notes
+            .row
+            .col-md-6(style='')
+              .table-responsive
+                table.table.table-striped.table-borderless.table-sm
+                  thead
+                    tr
+                  tbody
+                    tr
+                      th.text-right(scope='row') First Name
+                      td.text-left 
+                        label(for='student_fname') #{student_fname}
+                        input(type='hidden', id='student_fname', name='student_fname', value=student_fname)
+                    tr
+                      th.text-right(scope='row') Last Name
+                      td.text-left 
+                        label(for='student_lname') #{student_lname}
+                        input(type='hidden', id='student_lname', name='student_lname', value=student_lname)
+                    tr
+                      th.text-right(scope='row') Student PID
+                      td.text-left 
+                        label(for='id_student') #{id_student}
+                        input(type='hidden', id='pid', name='id_student', value=id_student)
+                    tr
+                      th.text-right(scope='row') Advisors First Name
+                      td.text-left 
+                        label(for='advisor_fname') #{advisor_fname}
+                        input(type='hidden', id='advisor_fname', name='advisor_fname', value=advisor_fname)
+                    tr
+                      th.text-right(scope='row') Advisors Last Name
+                      td.text-left 
+                        label(for='advisor_lname') #{advisor_lname}
+                        input(type='hidden', id='advisor_lname', name='advisor_lname', value=advisor_lname)
+                    tr
+                      th.text-right(scope='row') Ohio University GPA
+                      td#ou_gpa.text-left
+                    tr
+                      th.text-right(scope='row') The Date
+                      td.text-left
+                        label(for='meetingdate') #{meetingdate}
+                        input(type='hidden', id='meetingdate', name='meetingdate', value=meetingdate)
+                    tr
+                      th.text-right(scope='row') Advisor Email
+                      td.text-left
+                        input(type='text', style='font-size: 12pt', id='advisor_id', list='givemeads', name='advisor_ID', placeholder='Advisor ID', value=advisor_ID)
+                        datalist#givemeads
+                              each ads in adlist
+                                option #{ads.ID}
+                    tr
+                      th.text-right(scope='row') Total Credit Hours
+                      td#total_credits.text-left
+                    tr
+                      th.text-right(scope='row') Class Standing
+                      td#class_standing.text-left
+                    tr
+                      th.text-right(scope='row') Catalog Number
+                      td.text-left
+                        ul.nav
+                          li.nav-item.dropdown(style='box-shadow: 0px 0px 4px  black;')
+                            a.nav-link.dropdown-toggle(data-toggle='dropdown', href='/programofstudy', role='button', aria-haspopup='true', aria-expanded='false') #{catalog_num}
+                            .dropdown-menu
+                              each cat in cata
+                                a.dropdown-item(href='/programofstudy/' + id_student + '/' + cat.year) #{cat.year}
+                    tr
+            .col-md-6(style='')
+              p.text-left
+                | 1. Minimum 120 hours, 24 hours of OU ETM credit after transferring into ETM, with at least 16 hours at or above the 3000 level.
+                br
+                | 2. Must fulfill all university graduation requirements; GPA, general education, residence, etc.
+                br
+                | 3. All ETM coureses 2000 level & above require Advanced Standing in addtion to stated prerequisites.
+                br
+                | 4. Minimum 3 hours of ETM Electives. Any ETM 3000 or above (not otherwise required) may be used as an ETM Elective, with the exception of ETM service courses. (ETM 3070 will not count as an elective)
+                br
+                | 5. One of the math classes taken must be a Tier 2 Advanced Standing or an additional Tier 2 Advanced Standing class must be taken.
+                br
+                | 6. All Busines Minor Requirements must be met as determined by the College of Business including a 2.0 GPA. Required Buissness Minor Classes: ACCT 1005, FIN 3000, MGT 2000, MIS 2021, MKT 2020
+                br
+                | 7. ETM 4621 & ETM 4622 Must be taken in consecutive semesters (Fall-Spring or Spring-Fall)
+        .container
+          .row
+            .col-md-12
+              h2.display-6 #{headme[0].heading}
+              .table-responsive
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row1 in table1
+                      tr
+                        td(style='width: 9%')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row1.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td(style='width: 6%')
+                          u
+                            select(name='grade[]', placeholder='', value=row1.grad)
+                              option #{row1.grad}
+                              option 
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td(style='width: 11%')
+                          u
+                            input(type='text', size='15', name='code[]', pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', list='rawcourse', placeholder=row1.pcode, value=row1.pcode)
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName}
+                        td(style='width: 12%')
+                          u
+                            input(type='text', size='37' name='name[]', autocomplete='off', placeholder=row1.pname, value=row1.pname) 
+                        td(style='width: 8%')
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row1.phour, value=row1.hour) 
+                        td(style='width: 5%')
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row1.ptier, value=row1.tier)
+                        td(style='width: 19%')
+                          u
+                            input(type='text', size='37', name='prereq[]', autocomplete='off', placeholder=row1.preq, value=row1.prereq)
+                    tr
+                      script(type='text/javascript').
+                        function check() {
+                            if(document.getElementById("AS").checked){
+                              document.getElementById('Astanding').style.color = "#008000";
+                            }
+                            else{
+                              document.getElementById('Astanding').style.color = "#FF0000";
+                            }
+                        }
+                      td#Astanding(name='Astanding', style='color:#FF0000; font-weight: bold;', colspan='7') 
+                        dfn(data-info='Reqiures: GPA of 2.5 and completion of ETM 1000, 1030 & 1120; ET 1100; ENG 1510 or COMS 1030; Physics or Chemistry') ADVANCED STANDING (AS) IS REQUIRED FOR ALL ETM CLASSES 2000 AND ABOVE      
+                        input(type='checkbox', id='AS', name='AS', onclick="check();")
+                    each row2 in table2
+                      tr
+                        td(style='width: 9%')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row2.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td(style='width: 6%')
+                          u
+                            select(name='grade[]', placeholder='', value=row2.grad)
+                              option #{row2.grad}
+                              option
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td(style='width: 11%')
+                          u
+                            input(type='text', list='rawcourse', size='15', name='code[]', onkeyup="stripspaces(this)", pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', placeholder=row2.pcode, value=row2.pcode) 
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName}
+                        td(style='width: 12%')
+                          u
+                            input(type='text', size='37', name='name[]', autocomplete='off', placeholder=row2.pname, value=row2.pname) 
+                        td(style='width: 8%')
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row2.phour, value=row2.hour) 
+                        td(style='width: 5%')
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row2.ptier, value=row2.ptier)
+                        td(style='width: 19%')
+                          u
+                            input(type='text', size='37', name='prereq[]', autocomplete='off', placeholder='Prereqs', value=row2.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[1].heading}
+              .table-responsive
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row3 in table3
+                      tr
+                        th(scope='row')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row3.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td 
+                          u
+                            select(name='grade[]', placeholder='', value=row3.grad)
+                              option #{row3.grad}
+                              option 
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td 
+                          u
+                            input(type='text', list='rawcourse', size='15', name='code[]', onkeyup="stripspaces(this)", pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', placeholder=row3.pcode, value=row3.code)
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName} 
+                        td 
+                          u
+                            input(type='text', name='name[]', autocomplete='off', placeholder=row3.pname, value=row3.name) 
+                        td
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row3.phours, value=row3.hour) 
+                        td
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row3.ptier, value=row3.tier)
+                        td 
+                          u
+                            input(type='text', name='prereq[]', autocomplete='off', placeholder=row3.preq, value=row3.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[2].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row4 in table4
+                      tr
+                        td(style='width: 9%')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row4.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td(style='width: 6%')
+                          u
+                            select(name='grade[]', placeholder='', value=row4.grad)
+                              option #{row4.grad}
+                              option 
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td(style='width: 11%')
+                          u
+                            input(type='text', list='rawcourse', size='15', name='code[]', onkeyup="stripspaces(this)", pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', placeholder=row4.pcode value=row4.code)
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName}
+                        td(style='width: 12%')
+                          u
+                            input(type='text', size='37' name='name[]', autocomplete='off', placeholder=row4.pname, value=row4.name) 
+                        td(style='width: 8%')
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row4.phour, value=row4.hour) 
+                        td(style='width: 5%')
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row4.ptier, value=row4.tier)
+                        td(style='width: 19%')
+                          u
+                            input(type='text', size='37' name='prereq[]', autocomplete='off', placeholder=row4.preq, value=row4.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[3].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row5 in table5
+                      tr
+                        td(style='width: 9%')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row5.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td(style='width: 6%')
+                          u
+                            select(name='grade[]', placeholder='', value=row5.grad)
+                              option #{row5.grad}
+                              option 
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td(style='width: 11%')
+                          u
+                            input(type='text', list='rawcourse', size='15', name='code[]', onkeyup="stripspaces(this)", pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', placeholder=row5.pcode, value=row5.code)
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName}
+                        td(style='width: 12%')
+                          u
+                            input(type='text', size='37' name='name[]', autocomplete='off', placeholder=row5.pname, value=row5.name) 
+                        td(style='width: 8%')
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row5.phour, value=row5.hour) 
+                        td(style='width: 5%')
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row5.ptier, value=row5.tier)
+                        td(style='width: 19%')
+                          u
+                            input(type='text', size='37' name='prereq[]', autocomplete='off', placeholder=row5.preq, value=row5.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[4].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row6 in table6
+                      tr
+                        td(style='width: 9%')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row6.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td(style='width: 6%')
+                          u
+                            select(name='grade[]', placeholder='', value=row6.grad)
+                              option #{row6.grad}
+                              option 
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td(style='width: 11%')
+                          u
+                            input(type='text', list='rawcourse', size='15', name='code[]', onkeyup="stripspaces(this)", pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', placeholder=row6.pcode, value=row6.code)
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName} 
+                        td(style='width: 12%')
+                          u
+                            input(type='text', size='37', name='name[]', autocomplete='off', placeholder=row6.pname, value=row6.name) 
+                        td(style='width: 8%')
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row6.phour, value=row6.hour) 
+                        td(style='width: 5%')
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row6.ptier, value=row6.tier)
+                        td(style='width: 19%')
+                          u
+                            input(type='text', size='37', name='prereq[]', autocomplete='off', placeholder=row6.preq, value=row6.prereq)
+                      
+          .row
+            .col-md-12
+              h2.display-6 #{headme[5].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row7 in table7
+                      tr
+                        td(style='width: 9%')
+                          u
+                            input(type='text', size='13', pattern='[A-Z][a-z][0-9][0-9]', name='sem[]', autocomplete='off', list='semings', placeholder='', value=row7.sem)
+                            datalist#semings
+                              each semit in semies
+                                option #{semit.semester}
+                        td(style='width: 6%')
+                          u
+                            select(name='grade[]', placeholder='', value=row7.grad)
+                              option #{row7.grad}
+                              option 
+                              option A
+                              option A-
+                              option B+
+                              option B
+                              option B-
+                              option C+
+                              option C
+                              option C-
+                              option D+
+                              option D
+                              option D-
+                              option F
+                              option IP
+                              option HS
+                              option T
+                              option TA
+                              option TAA
+                              option TCT
+                              option TN
+                              option TP
+                              option TTC
+                              option TX
+                        td(style='width: 11%')
+                          u
+                            input(type='text', list='rawcourse', size='15', name='code[]', onkeyup="stripspaces(this)", pattern='[\\S]+', oninvalid="setCustomValidity('No White Spaces')", autocomplete='off', placeholder=row7.pcode, value=row7.code) 
+                            datalist#rawcourse
+                              each raw in rawcoursedata
+                                option #{raw.shortName}
+                        td(style='width: 12%')
+                          u
+                            input(type='text', size='37', name='name[]', autocomplete='off', placeholder=row7.pname, value=row7.name) 
+                        td(style='width: 8%')
+                          u
+                            input(type='text', size='4', name='hours[]', autocomplete='off', placeholder=row7.phour, value=row7.hour) 
+                        td(style='width: 5%')
+                          u
+                            input(type='text', size='4', name='tier[]', autocomplete='off', placeholder=row7.ptier, value=row7.tier)
+                        td(style='width: 19%')
+                          u
+                            input(type='text', size='37', name='prereq[]', autocomplete='off', placeholder=row7.preq, value=row7.prereq)
+    footer.text-md-left.text-center.p-4.bg-dark.text-light
+      .container
+        .row
+          .col-lg-12  
+        .row
+          .col-md-12
+            p.text-muted.text-center
+              br
+              br
+              | © Copyright 2019 WillCodeForFood - All rights reserved.
+    // JavaScript dependencies
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    // Script: Smooth scrolling between anchors in the same page
+    script(src='/js/smooth-scroll.js', style='')
+    button.btn.btn-primary.text-white(type='submit', id='submit', name='submit', onmouseover='savecsv();', form='coursesave', style='font-weight: bold; cursor:pointer;position: fixed;bottom: 1%;right: 1%; padding:0.3%; border-radius: 7%; width:10%;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:90%;color:white')
+      i.fa.fa-paper-plane.fa-fw
+      | Submit
+    button.btn.btn-primary.text-white(type='submit', onclick="createcsv();", style='font-weight: bold; cursor:pointer;position: fixed;bottom: 1%;left:1%;padding:0.3%;border-radius: 7%; width:10%; display:flex; flex-direction:row; align-items:center; justify-content:center; font-size:90%;color:white')
+      i.fa.fa-download.fa-fw
+      | Download
+    script(type='text/javascript').
+      var grade_listening = document.getElementsByName("grade[]");
+      for (var i = 0 ; i < grade_listening.length; i++) {
+        grade_listening[i].addEventListener('change' , calculate_grade_stuff) ; 
+      }
+      var hours_listening = document.getElementsByName("hours[]");
+      for (var i = 0 ; i < hours_listening.length; i++) {
+        hours_listening[i].addEventListener('input' , calculate_grade_stuff) ; 
+      }
+      
+      //Grade Points = credit hours * grade
+      //GPA =  Grade Points / Total Credit Hours Attempted
+      function calculate_grade_stuff() {
+        var values = document.getElementsByName("grade[]");
+        var houring = document.getElementsByName("hours[]");
+        var grade_points = 0;
+        var total_credits = 0;
+        var i = 0;
+        for(i; i < values.length - 1; i++){
+          if(values[i].value == 'A'){
+            grade_points = grade_points + (Number(houring[i].value) * 4);
+          }
+          else if(values[i].value == 'A-'){
+            grade_points = grade_points + (Number(houring[i].value) * 3.67);
+          }
+          else if(values[i].value == 'B+'){
+            grade_points = grade_points + (Number(houring[i].value) * 3.33);
+          }
+          else if(values[i].value == 'B'){
+            grade_points = grade_points + (Number(houring[i].value) * 3);
+          }
+          else if(values[i].value == 'B-'){
+            grade_points = grade_points + (Number(houring[i].value) * 2.67);
+          }
+          else if(values[i].value == 'C+'){
+            grade_points = grade_points + (Number(houring[i].value) * 2.33);
+          }
+          else if(values[i].value == 'C'){
+            grade_points = grade_points + (Number(houring[i].value) * 2.00);
+          }
+          else if(values[i].value == 'C-'){
+            grade_points = grade_points + (Number(houring[i].value) * 1.67);
+          }
+          else if(values[i].value == 'D+'){
+            grade_points = grade_points + (Number(houring[i].value) * 1.33);
+          }
+          else if(values[i].value == 'D'){
+            grade_points = grade_points + (Number(houring[i].value) * 1.00);
+          }
+          else if(values[i].value == 'D-'){
+            grade_points = grade_points + (Number(houring[i].value) * 0.67);
+          }
+          if(['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F+', 'F', 'F-'].includes(values[i].value)){
+            total_credits = total_credits + Number(houring[i].value);
+          }
+        }
+        
+        document.getElementById("total_credits").innerHTML = total_credits.toFixed(4);
+
+        if(total_credits <= 29.9){
+          document.getElementById("class_standing").innerHTML = 'Freshman';
+        }
+        if(total_credits >= 30 && total_credits <= 59.9){
+          document.getElementById("class_standing").innerHTML = 'Sophmore';
+        }
+        if(total_credits >= 60 && total_credits <= 89.9){
+          document.getElementById("class_standing").innerHTML = 'Junior';
+        }
+        if(total_credits >= 90){
+          document.getElementById("class_standing").innerHTML = 'Senior';
+        }
+        var checknumber = isNaN(grade_points/ total_credits);
+        if(!checknumber){
+          document.getElementById("ou_gpa").innerHTML = (grade_points / total_credits).toFixed(4);
+        }
+        if(checknumber){
+          document.getElementById("ou_gpa").innerHTML = 0;
+        }
+      }
+    script(type='text/javascript').
+      function createcsv(){
+        var sfname = document.getElementById("student_fname").value;
+        var slname = document.getElementById("student_lname").value;
+        var pid = document.getElementById("pid").value;
+        var advisor_fname = document.getElementById("advisor_fname").value;
+        var advisor_lname = document.getElementById("advisor_lname").value;
+        var meetingdate = document.getElementById("meetingdate").value;
+        var advisor_id = document.getElementById("advisor_id").value;
+        var gpa = document.getElementById("ou_gpa");
+        var seme = document.getElementsByName("sem[]");
+        var val = document.getElementsByName("grade[]");
+        var code = document.getElementsByName("code[]");
+        var name = document.getElementsByName("name[]");
+        var hours = document.getElementsByName("hours[]");
+        var tier = document.getElementsByName("tier[]");
+        var values = document.getElementsByName("prereq[]");
+        var coursearray = [];
+        var student_data = [];
+        var sheaders = [];
+        var headers = [];
+
+        sheaders[1] = "Students";
+        sheaders[2] = "Name";
+        sheaders[3] = "PID";
+        sheaders[4] = "Advisor";
+        sheaders[5] = "Name";
+        sheaders[6] = "Download Date";
+        sheaders[7] = "Advisor Email";
+
+        student_data[0] = sfname;
+        student_data[1] = slname;
+        student_data[2] = pid;
+        student_data[3] = advisor_fname;
+        student_data[4] = advisor_lname;
+        student_data[5] = meetingdate;
+        student_data[6] = advisor_id;
+
+        headers[0] = "Semester";
+        headers[1] = "Grade";
+        headers[2] = "Course Code";
+        headers[3] = "Course Name";
+        headers[4] = "Course Hours";
+        headers[5] = "Course Tier";
+        headers[6] = "Course Prerequisites";
+
+        coursearray.push(sheaders);
+        coursearray.push(student_data);
+        coursearray.push(headers);
+        for(var i = 0; i < code.length; i++){
+          var set = [];
+          if(code[i].value != ''){
+            set[0] =  seme[i].value;
+            set[1] =  val[i].value;
+            set[2] = code[i].value;
+            set[3] = name[i].value;
+            set[4] = hours[i].value;
+            set[5] = tier[i].value;
+            set[6] = values[i].value;
+            
+            coursearray.push(set);
+          }
+        }
+        let csvcontent = "data:text/csv;charset=utf-8" + coursearray.map(e=>e.join(",")).join("\n");
+        var encodedUri = encodeURI(csvcontent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", pid + "_POS.csv");
+        document.body.appendChild(link);
+
+        link.click();
+        
+      }
+    script(type='text/javascript').
+      function savecsv(){
+        var sfname = document.getElementById("student_fname").value;
+        var slname = document.getElementById("student_lname").value;
+        var pid = document.getElementById("pid").value;
+        var advisor_fname = document.getElementById("advisor_fname").value;
+        var advisor_lname = document.getElementById("advisor_lname").value;
+        var meetingdate = document.getElementById("meetingdate").value;
+        var advisor_id = document.getElementById("advisor_id").value;
+        var gpa = document.getElementById("ou_gpa");
+        var seme = document.getElementsByName("sem[]");
+        var val = document.getElementsByName("grade[]");
+        var code = document.getElementsByName("code[]");
+        var name = document.getElementsByName("name[]");
+        var hours = document.getElementsByName("hours[]");
+        var tier = document.getElementsByName("tier[]");
+        var values = document.getElementsByName("prereq[]");
+        var coursearray = [];
+        var student_data = [];
+        var sheaders = [];
+        var headers = [];
+
+        sheaders[1] = "Students";
+        sheaders[2] = "Name";
+        sheaders[3] = "PID";
+        sheaders[4] = "Advisor";
+        sheaders[5] = "Name";
+        sheaders[6] = "Download Date";
+        sheaders[7] = "Advisor Email";
+
+        student_data[0] = sfname;
+        student_data[1] = slname;
+        student_data[2] = pid;
+        student_data[3] = advisor_fname;
+        student_data[4] = advisor_lname;
+        student_data[5] = meetingdate;
+        student_data[6] = advisor_id;
+
+        headers[0] = "Semester";
+        headers[1] = "Grade";
+        headers[2] = "Course Code";
+        headers[3] = "Course Name";
+        headers[4] = "Course Hours";
+        headers[5] = "Course Tier";
+        headers[6] = "Course Prerequisites";
+
+        coursearray.push(sheaders);
+        coursearray.push(student_data);
+        coursearray.push(headers);
+        for(var i = 0; i < code.length; i++){
+          var set = [];
+          if(code[i].value != ''){
+            set[0] =  seme[i].value;
+            set[1] =  val[i].value;
+            set[2] = code[i].value;
+            set[3] = name[i].value;
+            set[4] = hours[i].value;
+            set[5] = tier[i].value;
+            set[6] = values[i].value;
+            
+            coursearray.push(set);
+          }
+        }
+        let csvcontent = coursearray.map(e=>e.join(",")).join("\n");
+        document.getElementById("submit").value = csvcontent;
+        
+      }
+    script(type='text/javascript').
+      function stripspaces(input){
+        input.value = input.value.replace(/\s/gi,"");
+        return true;
+      }

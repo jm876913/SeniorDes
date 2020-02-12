@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(http-equiv='refresh', content='4; /houme')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Error Page
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Make my navbar transparent when the document is scrolled to top
+    script(src='/js/navbar-ontop.js')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/errorpage.css')
+  body.text-center
+    // Navbar
+    // Cover
+    .d-flex.align-items-center.section-aquamarine.py-5.cover(style='	background-image: url(/assets/circuit-wallpapers-30650-2483188.gif);	background-position: top left;	background-size: 100%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            .row
+              .col-md-12
+                h1.display-1 Error
+            .row
+              .col-md-12
+                h1.display-4 there was a problem with the program of study..
+            h1.p-3 #{error_data}

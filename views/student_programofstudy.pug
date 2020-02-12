@@ -1,0 +1,593 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Program Of Study
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/programofstudy.css')
+  body.text-center(style='')
+    - var m = new Date();
+    - var meetingdate = m.getUTCFullYear() +"-"+ (m.getUTCMonth()+1) +"-"+ m.getUTCDate() + " " + ((m.getHours() % 12 || 12) < 10 ? '0' : '') + (m.getHours() % 12 || 12) + ":" + (m.getMinutes()<10?'0':'') + m.getMinutes();
+    
+    script(type='text/javascript').
+      window.onload = function() {
+        if(#{student_standing} == true){
+            document.getElementById('Astanding').style.color = "#008000";
+            document.getElementById("AS").checked = true;
+          }
+        else{
+          document.getElementById('Astanding').style.color = "#FF0000";
+          document.getElementById("AS").checked = false;
+        }
+        
+        //- var get_gpa = calculate_gpa();
+        //- document.getElementById("ou_gpa").innerHTML = get_gpa.gpa.toFixed(4);
+        //- document.getElementById("total_credits").innerHTML = get_gpa.credits.toFixed(4);
+        calculate_grade_stuff();
+      }
+    // Navbar
+    .py-5.section-aquamarine(style='	background-image: url(/assets/programofstudybackground.jpg);	background-position: left top;	background-size: 60%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            h1.display-6.shadow-lg.text-center.text-white Program Of Study
+    // Cover
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-info
+      .container
+        button.navbar-toggler.navbar-toggler-right.border-0.p-0(type='button', data-toggle='collapse', data-target='#navbar12')
+          p.navbar-brand.mb-0.text-white
+            i.fa.d-inline.fa-lg.fa-bars
+            |  MENU
+        #navbar12.collapse.navbar-collapse
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link(href='/student/programofstudy')
+                i.fa.fa-home.fa-fw
+                | ETM
+          ul.navbar-nav.mx-auto
+            li.nav-item
+              a.nav-link(href='/student/programofstudy/')
+                i.fa.fa-book.fa-fw
+                | Program Of Study
+            li.nav-item
+              a.nav-link(href='/student/programplanner/')
+                i.fa.fa-line-chart.fa-fw
+                | Program Planner
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link.text-primary(href='/') 
+                i.fa.fa-power-off.fa-fw
+                | Logout
+    form.p-2(method='POST', action='/programofstudy', id='coursesave')
+      .py-5(style='')
+        .container
+          .row
+            .col-md-12
+              h2.display-6 ETM Bachelor Of Science
+              .row
+                .col-md-6
+                  h2.display-6 Student Information
+                .col-md-6
+                  h2.display-6 Notes
+            .row
+            .col-md-6(style='')
+              .table-responsive
+                table.table.table-striped.table-borderless.table-sm
+                  thead
+                    tr
+                  tbody
+                    tr
+                      th.text-right(scope='row') First Name
+                      td.text-left 
+                        label(for='student_fname') #{student_fname}
+                        input(type='hidden', id='student_fname', name='student_fname', value=student_fname)
+                    tr
+                      th.text-right(scope='row') Last Name
+                      td.text-left 
+                        label(for='student_lname') #{student_lname}
+                        input(type='hidden', id='student_lname', name='student_lname', value=student_lname)
+                    tr
+                      th.text-right(scope='row') Student PID
+                      td.text-left 
+                        label(for='id_student') #{id_student}
+                        input(type='hidden', id='pid', name='id_student', value=id_student)
+                    tr
+                      th.text-right(scope='row') Advisors First Name
+                      td.text-left 
+                        label(for='advisor_fname') #{advisor_fname}
+                        input(type='hidden', id='advisor_fname', name='advisor_fname', value=advisor_fname)
+                    tr
+                      th.text-right(scope='row') Advisors Last Name
+                      td.text-left 
+                        label(for='advisor_lname') #{advisor_lname}
+                        input(type='hidden', id='advisor_lname', name='advisor_lname', value=advisor_lname)
+                    tr
+                      th.text-right(scope='row') Ohio University GPA
+                      td#ou_gpa.text-left
+                    tr
+                      th.text-right(scope='row') The Date
+                      td.text-left
+                        label(for='meetingdate') #{meetingdate}
+                        input(type='hidden', id='meetingdate', name='meetingdate', value=meetingdate)
+                    tr
+                      th.text-right(scope='row') Advisor Email
+                      td.text-left
+                        label(for='advisor_id') #{advisor_ID}
+                        input(type='hidden', style='font-size: 12pt', id='advisor_id', list='givemeads', name='advisor_ID', placeholder='Advisor ID', value=advisor_ID)
+                    tr
+                      th.text-right(scope='row') Total Credit Hours
+                      td#total_credits.text-left
+                    tr
+                      th.text-right(scope='row') Class Standing
+                      td#class_standing.text-left
+                    tr
+                      th.text-right(scope='row') Catalog Year
+                      td.text-left 
+                        label(for='cat_num')  #{catalog_num}
+                        input(type='hidden', id='cat_num', name='cat_num', value=catalog_num)
+                    tr
+            .col-md-6(style='')
+              p.text-left
+                | 1. Minimum 120 hours, 24 hours of OU ETM credit after transferring into ETM, with at least 16 hours at or above the 3000 level.
+                br
+                | 2. Must fulfill all university graduation requirements; GPA, general education, residence, etc.
+                br
+                | 3. All ETM coureses 2000 level & above require Advanced Standing in addtion to stated prerequisites.
+                br
+                | 4. Minimum 3 hours of ETM Electives. Any ETM 3000 or above (not otherwise required) may be used as an ETM Elective, with the exception of ETM service courses. (ETM 3070 will not count as an elective)
+                br
+                | 5. One of the math classes taken must be a Tier 2 Advanced Standing or an additional Tier 2 Advanced Standing class must be taken.
+                br
+                | 6. All Busines Minor Requirements must be met as determined by the College of Business including a 2.0 GPA. Required Buissness Minor Classes: ACCT 1005, FIN 3000, MGT 2000, MIS 2021, MKT 2020
+                br
+                | 7. ETM 4621 & ETM 4622 Must be taken in consecutive semesters (Fall-Spring or Spring-Fall)
+        .container
+          .row
+            .col-md-12
+              h2.display-6 #{headme[0].heading}
+              .table-responsive
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row1 in table1
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row1.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row1.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row1.grad}
+                          input(type='hidden', id='grade[]', name='grade[]', value=row1.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row1.pcode}
+                          input(type='hidden', id='code[]', name='code[]', value=row1.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row1.pname}
+                          input(type='hidden', id='name[]', name='name[]', value=row1.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row1.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row1.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row1.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row1.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row1.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row1.prereq)
+                    tr
+                      script(type='text/javascript').
+                        function check() {
+                            if(document.getElementById("AS").checked){
+                              document.getElementById('Astanding').style.color = "#008000";
+                            }
+                            else{
+                              document.getElementById('Astanding').style.color = "#FF0000";
+                            }
+                        }
+                      td#Astanding(name='Astanding', style='color:#FF0000; font-weight: bold;', colspan='7') 
+                        dfn(data-info='Reqiures: GPA of 2.5 and completion of ETM 1000, 1030 & 1120; ET 1100; ENG 1510 or COMS 1030; Physics or Chemistry') ADVANCED STANDING (AS) IS REQUIRED FOR ALL ETM CLASSES 2000 AND ABOVE      
+                        input(type='checkbox', id='AS', name='AS', onclick="check();")
+                    each row2 in table2
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row2.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row2.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row2.grad}
+                          input(type='hidden', id='grad[]', name='grade[]', value=row2.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row2.pcode}
+                          input(type='hidden', id='code[]', name='code[]', value=row2.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row2.pname}
+                          input(type='hidden', id='name[]', name='name[]', value=row2.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row2.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row2.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row2.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row2.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row2.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row2.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[1].heading}
+              .table-responsive
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row3 in table3
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row3.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row3.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row3.grad}
+                          input(type='hidden', id='grad[]', name='grade[]', value=row3.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row3.code}
+                          input(type='hidden', id='code[]', name='code[]', value=row3.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row3.name}
+                          input(type='hidden', id='name[]', name='name[]', value=row3.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row3.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row3.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row3.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row3.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row3.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row3.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[2].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row4 in table4
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row4.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row4.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row4.grad}
+                          input(type='hidden', id='grad[]', name='grade[]', value=row4.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row4.code}
+                          input(type='hidden', id='code[]', name='code[]', value=row4.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row4.name}
+                          input(type='hidden', id='name[]', name='name[]', value=row4.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row4.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row4.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row4.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row4.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row4.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row4.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[3].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row5 in table5
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row5.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row5.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row5.grad}
+                          input(type='hidden', id='grad[]', name='grade[]', value=row5.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row5.code}
+                          input(type='hidden', id='code[]', name='code[]', value=row5.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row5.name}
+                          input(type='hidden', id='name[]', name='name[]', value=row5.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row5.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row5.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row5.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row5.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row5.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row5.prereq)
+          .row
+            .col-md-12
+              h2.display-6 #{headme[4].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row6 in table6
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row6.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row6.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row6.grad}
+                          input(type='hidden', id='grad[]', name='grade[]', value=row6.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row6.code}
+                          input(type='hidden', id='code[]', name='code[]', value=row6.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row6.name}
+                          input(type='hidden', id='name[]', name='name[]', value=row6.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row6.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row6.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row6.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row6.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row6.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row6.prereq)
+                      
+          .row
+            .col-md-12
+              h2.display-6 #{headme[5].heading}
+              .table-responsive.d-flex.flex-row
+                table.table.table-striped.table-borderless.table-sm
+                  thead.thead-dark
+                    tr
+                      th(scope='col') Semester
+                      th(scope='col') Grade
+                      th(scope='col') Course Code
+                      th(scope='col') Course Name
+                      th(scope='col') Hours
+                      th(scope='col') Tier
+                      th(scope='col') Prerequisites
+                  tbody
+                    each row7 in table7
+                      tr
+                        td(style='width: 9%', align='left')
+                          label(for='sem[]') #{row7.sem}
+                          input(type='hidden', id='sem[]', name='sem[]', value=row7.sem)
+                        td(style='width: 6%', align='left')
+                          label(for='grad[]') #{row7.grad}
+                          input(type='hidden', id='grad[]', name='grade[]', value=row7.grad)
+                        td(style='width: 11%', align='left')
+                          label(for='code[]') #{row7.code}
+                          input(type='hidden', id='code[]', name='code[]', value=row7.code)
+                        td(style='width: 12%', align='left')
+                          label(for='name[]') #{row7.name}
+                          input(type='hidden', id='name[]', name='name[]', value=row7.name)
+                        td(style='width: 8%', align='left')
+                          label(for='hour[]') #{row7.hour}
+                          input(type='hidden', id='hour[]', name='hours[]', value=row7.hour)
+                        td(style='width: 5%', align='left')
+                          label(for='tier[]') #{row7.tier}
+                          input(type='hidden', id='tier[]', name='tier[]', value=row7.tier)
+                        td(style='width: 19%', align='left')
+                          label(for='prereq[]') #{row7.prereq}
+                          input(type='hidden', id='prereq[]', name='prereq[]', value=row7.prereq)
+    footer.text-md-left.text-center.p-4.bg-dark.text-light
+      .container
+        .row
+          .col-lg-12  
+        .row
+          .col-md-12
+            p.text-muted.text-center
+              br
+              br
+              | © Copyright 2019 WillCodeForFood - All rights reserved.
+    // JavaScript dependencies
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    // Script: Smooth scrolling between anchors in the same page
+    script(src='/js/smooth-scroll.js', style='')
+    button.btn.btn-primary.text-white(type='submit', onclick="createcsv();", style='font-weight: bold; cursor:pointer;position: fixed;bottom: 1%;left:1%;padding:0.3%;border-radius: 7%; width:10%; display:flex; flex-direction:row; align-items:center; justify-content:center; font-size:90%;color:white')
+      i.fa.fa-download.fa-fw
+      | Download
+    script(type='text/javascript').
+      var grade_listening = document.getElementsByName("grade[]");
+      for (var i = 0 ; i < grade_listening.length; i++) {
+        grade_listening[i].addEventListener('change' , calculate_grade_stuff) ; 
+      }
+      var hours_listening = document.getElementsByName("hours[]");
+      for (var i = 0 ; i < hours_listening.length; i++) {
+        hours_listening[i].addEventListener('input' , calculate_grade_stuff) ; 
+      }
+      
+      //Grade Points = credit hours * grade
+      //GPA =  Grade Points / Total Credit Hours Attempted
+      function calculate_grade_stuff() {
+        var values = document.getElementsByName("grade[]");
+        var houring = document.getElementsByName("hours[]");
+        var grade_points = 0;
+        var total_credits = 0;
+        var i = 0;
+        for(i; i < values.length - 1; i++){
+          if(values[i].value == 'A'){
+            grade_points = grade_points + (Number(houring[i].value) * 4);
+          }
+          else if(values[i].value == 'A-'){
+            grade_points = grade_points + (Number(houring[i].value) * 3.67);
+          }
+          else if(values[i].value == 'B+'){
+            grade_points = grade_points + (Number(houring[i].value) * 3.33);
+          }
+          else if(values[i].value == 'B'){
+            grade_points = grade_points + (Number(houring[i].value) * 3);
+          }
+          else if(values[i].value == 'B-'){
+            grade_points = grade_points + (Number(houring[i].value) * 2.67);
+          }
+          else if(values[i].value == 'C+'){
+            grade_points = grade_points + (Number(houring[i].value) * 2.33);
+          }
+          else if(values[i].value == 'C'){
+            grade_points = grade_points + (Number(houring[i].value) * 2.00);
+          }
+          else if(values[i].value == 'C-'){
+            grade_points = grade_points + (Number(houring[i].value) * 1.67);
+          }
+          else if(values[i].value == 'D+'){
+            grade_points = grade_points + (Number(houring[i].value) * 1.33);
+          }
+          else if(values[i].value == 'D'){
+            grade_points = grade_points + (Number(houring[i].value) * 1.00);
+          }
+          else if(values[i].value == 'D-'){
+            grade_points = grade_points + (Number(houring[i].value) * 0.67);
+          }
+          if(['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F+', 'F', 'F-'].includes(values[i].value)){
+            total_credits = total_credits + Number(houring[i].value);
+          }
+        }
+        
+        document.getElementById("total_credits").innerHTML = total_credits.toFixed(4);
+
+        if(total_credits <= 29.9){
+          document.getElementById("class_standing").innerHTML = 'Freshman';
+        }
+        if(total_credits >= 30 && total_credits <= 59.9){
+          document.getElementById("class_standing").innerHTML = 'Sophmore';
+        }
+        if(total_credits >= 60 && total_credits <= 89.9){
+          document.getElementById("class_standing").innerHTML = 'Junior';
+        }
+        if(total_credits >= 90){
+          document.getElementById("class_standing").innerHTML = 'Senior';
+        }
+        var checknumber = isNaN(grade_points/ total_credits);
+        if(!checknumber){
+          document.getElementById("ou_gpa").innerHTML = (grade_points / total_credits).toFixed(4);
+        }
+        if(checknumber){
+          document.getElementById("ou_gpa").innerHTML = 0;
+        }
+      }
+    script(type='text/javascript').
+      function createcsv(){
+        var sfname = document.getElementById("student_fname").value;
+        var slname = document.getElementById("student_lname").value;
+        var pid = document.getElementById("pid").value;
+        var advisor_fname = document.getElementById("advisor_fname").value;
+        var advisor_lname = document.getElementById("advisor_lname").value;
+        var meetingdate = document.getElementById("meetingdate").value;
+        var advisor_id = document.getElementById("advisor_id").value;
+        var gpa = document.getElementById("ou_gpa");
+        var seme = document.getElementsByName("sem[]");
+        var val = document.getElementsByName("grade[]");
+        var code = document.getElementsByName("code[]");
+        var name = document.getElementsByName("name[]");
+        var hours = document.getElementsByName("hours[]");
+        var tier = document.getElementsByName("tier[]");
+        var values = document.getElementsByName("prereq[]");
+        var coursearray = [];
+        var student_data = [];
+        var sheaders = [];
+        var headers = [];
+
+        sheaders[1] = "Students";
+        sheaders[2] = "Name";
+        sheaders[3] = "PID";
+        sheaders[4] = "Advisor";
+        sheaders[5] = "Name";
+        sheaders[6] = "Download Date";
+        sheaders[7] = "Advisor Email";
+
+        student_data[0] = sfname;
+        student_data[1] = slname;
+        student_data[2] = pid;
+        student_data[3] = advisor_fname;
+        student_data[4] = advisor_lname;
+        student_data[5] = meetingdate;
+        student_data[6] = advisor_id;
+
+        headers[0] = "Semester";
+        headers[1] = "Grade";
+        headers[2] = "Course Code";
+        headers[3] = "Course Name";
+        headers[4] = "Course Hours";
+        headers[5] = "Course Tier";
+
+        coursearray.push(sheaders);
+        coursearray.push(student_data);
+        coursearray.push(headers);
+        for(var i = 0; i < code.length; i++){
+          var set = [];
+          if(code[i].value != ''){
+            set[0] =  seme[i].value;
+            set[1] =  val[i].value;
+            set[2] = code[i].value;
+            set[3] = name[i].value;
+            set[4] = hours[i].value;
+            set[5] = tier[i].value;
+            set[6] = values[i].value;
+            
+            coursearray.push(set);
+          }
+        }
+        let csvcontent = "data:text/csv;charset=utf-8" + coursearray.map(e=>e.join(",")).join("\n");
+        var encodedUri = encodeURI(csvcontent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", pid + "_POS.csv");
+        document.body.appendChild(link);
+
+        link.click();
+        
+      }
+
+    script(type='text/javascript').
+      function stripspaces(input){
+        input.value = input.value.replace(/\s/gi,"");
+        return true;
+      }

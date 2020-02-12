@@ -1,0 +1,281 @@
+html
+	head
+		title Program Planner
+		h1 Program Planner
+		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
+		meta(http-equiv='content-type', content='text/html; charset=windows-1252')
+		style.
+			table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			}
+			th, td {
+			padding: 5px;
+			text-align: left;
+			}
+	body
+		script(type='text/javascript').
+			console.log("in here");
+			var parsed = "";
+			var classes_taken2;
+			var classes_left = [];
+			var classes = [{courseName:"ETM 1000", hours: 0.5, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ET 1100", hours: 2, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM 1030", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM 1120", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"COMS 1030", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"PHYS 2001", hours: 4, offered:["Fall", "Spring", "Summer"], req: ["MATH1200"]}, {courseName:"ENG 1510", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"CHEM 1210", hours: 4, offered:["Fall", "Spring", "Summer"], req: ["MATH1200"]}, {courseName:"MATH 1300", hours: 4, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ET 1500", hours: 0.5, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ACCT 1005/1010", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM 2080", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "CHEM1210"]}, {courseName:"ETM 2210", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "PHYS2001"]}, {courseName:"ETM 3030", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS"]}, {courseName:"PSY 1010", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"FIN 3000", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM 2180", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "CHEM1210"]}, {courseName:"ETM 2510", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS"]}, {courseName:"ETM 3100", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM2080"]}, {courseName:"T2 FA", hours: 2, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM 3620", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "COMS1030", "MGT2000"]}, {courseName:"ETM 3310", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM3030"]}, {courseName:"ETM 3320", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM3030", "PHYS2001"]}, {courseName:"ETM 3200", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM2210"]}, {courseName:"ISE 3040", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "MATH1300"]}, {courseName:"ENG ***J", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"T2 CP", hours: 2, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM ELEC", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS"]}, {courseName:"ETM 3510", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM2510", "ETM3100"]}, {courseName:"MGT 2000", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"MIS 2021", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}, {courseName:"ETM 3630", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM2080", "ETM2180", "ENG***J", "MATH2500"]}, {courseName:"ETM 3830", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM1030", "MGT2000"]}, {courseName:"ETM 4000", hours: 0.5, offered:["Fall", "Spring", "Summer"], req: ["AS"]}, {courseName:"ETM 4320", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM1030", "MGT2000"]}, {courseName:"ETM 4621", hours: 2, offered:["Fall"], req: ["AS", "ETM2210", "ETM2510", "ETM3030", "ETM3100"]}, {courseName:"ETM 4350", hours: 3, offered:["Fall", "Spring", "Summer"], req: ["AS", "ETM3030", "ETM3200", "ETM3320"]}, {courseName:"ETM 4622", hours: 3, offered:["Spring"], req: ["AS", "ETM4621", "ETM3510", "ETM3630"]}, {courseName:"MKT 2020", hours: 3, offered:["Fall", "Spring", "Summer"], req: []}]; 
+			fillclassest();
+			console.log(JSON.stringify(classes_taken2));
+			var k = 0;
+			classes_taken2.sort(compare);
+			var data = JSON.stringify(classes_taken2);
+			for(var i = 0; i < classes.length; i++){
+				var found = bsearch(classes[i].courseName, data);
+				if(found == false){
+					classes_left.push(classes[i]);
+				}
+			}
+			//where it BEGINS
+			var j = 0, i = 0, hours = 0;
+			var S = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+			
+			//put classes_taken in
+			var curr_semester = classes_taken2[0].semester;
+			if(curr_semester[0] != "F"){
+				i++;
+				if(curr_semester[1] == "u")
+					i++;
+			}
+			
+			var l = curr_semester.length;
+			y = curr_semester[l-2] + curr_semester[l-1];
+			for(var k = 0; k < classes_taken2.length; k++){
+				if(classes_taken2[j].semester == curr_semester){
+					S[i][j] = classes_taken2[k];
+				}else{
+					var l = curr_semester.length;
+					y = curr_semester[l-2] + curr_semester[l-1];
+					var l1 = classes_taken2[k].semester;
+					var y1 = classes_taken2[k].semester[l1-2] + classes_taken2[k].semester[l1-1];
+					if(y == y1){
+						if(curr_semester[0] == "F"){
+							if(classes_taken2[k].semester[1] == "p"){
+								curr_semester = classes_taken2[k].semester;
+								i++;
+								j = 0;
+								S[i][j] = classes_taken2;
+							}else if(classes_taken2[k].semester[1] == "u"){
+								curr_semester = classes_taken2[k].semester;
+								i+=2;
+								j = 0;
+								S[i][j] = classes_taken2;
+							}
+						}else if(curr_semester[0] == "S"){
+							curr_semester = classes_taken2[k].semester;
+							i++;
+							j = 0;
+							S[i][j] = classes_taken2;
+						}	
+					}else{ //y != y1
+						if(curr_semester[0] == "F"){
+							i+=3;
+						}else if(curr_semester[1] == "p"){
+							i+=2;
+						}else{
+							i++;
+						}
+					}
+				}
+				j++;
+			}
+			var y_int = parseInt(y);
+			j = 0;
+			
+			console.log(curr_semester);
+			if(curr_semester[0] == "F"){
+				i++;
+				curr_semester = "Sp" + y_int.toString();
+			}else if(curr_semester[1] == "p"){
+				i+=2;
+				y_int++;
+				curr_semester = "Fa" + y_int.toString();
+			}else{
+				i++;
+				y_int++;
+				curr_semester = "Fa" + y_int.toString();
+			}
+			
+			for(var k = 0; k < classes_left.length; k++){
+				S[i][j] = classes_left[k];
+				S[i][j].semester = curr_semester;
+				j++;
+				hours += classes_left[k].hours;
+				if(hours >= 15){
+					hours = 0;
+					if(curr_semester[0] == "F"){
+						i++;
+						j = 0;
+						curr_semester = "Sp" + y_int.toString();
+					}else{
+						i+=2;
+						j = 0;
+						y_int++;
+						curr_semester = "Fa" + y_int.toString();
+					}
+				}
+			}          
+			console.log(S);
+				
+			function fillclassest(){classes_taken2 = !{classes_taken};};
+			function compare(a,b){
+				if (a.courseName < b.courseName)
+					return -1;
+				if (a.courseName > b.courseName)
+					return 1;
+				return 0;
+			};
+			var sem = 0; var sum1 = 0; var sum2 = 0; var sum3 = 0; var c = 0; var d = 0;
+
+			function bsearch(c, arr){
+				var data = JSON.parse(arr);
+				console.log(data);
+				if(data.length <= 0) return false;
+				if(data.length == 1){
+					if(data[0].courseName == c)
+						return true;
+					else return false;
+				}	
+				m = Math.floor(data.length / 2);	
+				if(c == data[m].courseName)
+					return true;
+				else if(c > data[m].courseName){
+					arr = data.slice(m+1);
+					data = JSON.stringify(arr);
+					return bsearch(c, data);
+				}else if(c < data[m].courseName){
+					arr = data.slice(0, m);
+					data = JSON.stringify(arr);
+					return bsearch(c, data);
+				}else
+					alert("Something went wrong");
+				};
+		header#ire5
+			h3  Program Planning Sheet for : 
+				input(type='text', name='student_fname', placeholder='Student First Name', value=student_fname)
+				input(type='text', name='student_lname', placeholder='Student Last Name', value=student_lname) 
+				input(type='text', name='PID', placeholder='Student PID', value=PID)
+			table(width='100%')
+				tbody
+					tr
+						th.border-top.border-left(rowspan='2')
+							br
+						th.border-top.border-right(colspan='2') Fall
+						th.border-top.border-right(colspan='2') Spring
+						th.border-top.border-right(colspan='2') Summer
+					tr.border-bottom
+						th(width='20%') Course
+						th.border-right(width='10%') Hours
+						th(width='20%') Course
+						th.border-right(width='10%') Hours
+						th(width='20%') Course
+						th.border-right(width='10%') Hours
+
+					-for(var c = 0; c < 4; ++c){
+					tr
+						th.border-bottom.border-left.border-top(rowspan='9') Year
+							u
+								script.
+									if(S[sem] != null){
+										if(S[sem][0] != null){
+											if(S[sem][0].semester != null){
+												console.log(S[sem][0].semester);
+												var l = S[sem][0].semester.length;
+												var y = S[sem][0].semester[l-2] + S[sem][0].semester[l-1];
+												console.log(y);
+												document.write(y);
+											}else{
+												document.write(" ");
+											}
+										}else{
+											document.write(" ");
+										}
+									}
+					-for(var d = 0; d < 8; ++d){
+					tr
+						td
+							script.
+								console.log("d : " + d);
+								if(S[sem] == null){
+									document.write(" ");
+								}else if(S[sem][0] == null){
+									document.write(" ");
+								}else if(d >= S[sem].length){
+									document.write(" ");
+								}else{
+									document.write(S[sem][d].courseName);
+								}
+						td.border-right
+							u
+								script.
+									if(S[sem] == null){
+										document.write(" ");
+									}else if(d >= S[sem].length && S[sem].length >= 0){
+										if(S[sem][d] == null && sum1 != 0){
+											document.write(sum1);
+											sum1 = 0;
+										}else
+											document.write(" ");
+									}else{
+										document.write(S[sem][d].hours);
+										sum1 += S[sem][d].hours;
+									}
+						td
+							u
+								script.
+									if(S[sem+1] == null){
+										document.write(" ");
+									}else if(d >= S[sem+1].length)
+										document.write(" ");
+									else
+										document.write(S[sem+1][d].courseName);
+						td.border-right
+							u
+								script.
+									if(S[sem+1] == null){
+										document.write(" ");
+									}else if(d >= S[sem+1].length && S[sem+1].length >= 0){
+										if(S[sem+1][d] == null && sum2 != 0){
+											document.write(sum2);
+											sum2 = 0;
+										}else
+											document.write(" ");
+									}else{
+										document.write(S[sem+1][d].hours);
+										sum2 += S[sem+1][d].hours;
+									}
+						td
+							u
+								script.
+									if(S[sem+2] == null){
+										document.write(" ");
+									}else if(d >= S[sem+2].length)
+										document.write(" ");
+									else
+										document.write(S[sem+2][d].courseName);
+						td.border-right
+							u
+								script.
+									if(S[sem+2] == null){
+										document.write(" ");
+									}else if(d >= S[sem+2].length && S[sem+2].length >= 0){
+										if(S[sem+2][d] == null && sum3 != 0){
+											document.write(sum3);
+											sum3 = 0;
+										}else
+											document.write(" ");
+									}else{
+										document.write(S[sem+2][d].hours);
+										sum3 += S[sem+2][d].hours;
+									}
+									d++;
+						-}
+						script.
+							sem+=3;
+							d=0;
+					-}

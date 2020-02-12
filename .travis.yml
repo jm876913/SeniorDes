@@ -1,0 +1,30 @@
+dist: xenial
+language: node_js
+rvm: 
+  - "10.13.0"
+  - express
+  - pug
+  - mysql
+  - path
+  - http
+  - morgan
+  - url
+  - body-parser
+language: python
+rvm: 
+  - "3.7.0"
+mysql:
+    adapter: mysql12
+    database: etm
+    username: root
+    encoding: utf8
+#install:
+#  - pip install -r requirements.txt
+before_install:
+  - mysql -e 'CREATE DATABASE etm;'
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo service mysql restart
+services:
+  - mysql
+script:
+  - node server.js

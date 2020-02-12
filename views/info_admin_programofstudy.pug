@@ -1,0 +1,118 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Help Pages
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/programofstudy.css')
+  body.text-center
+    // Navbar
+    // Cover
+    // Parallax section
+    // Speakers
+    // Schedule
+    // Sponsor logos
+    // Call to action
+    // Footer
+    // JavaScript dependencies
+    .py-5.section-aquamarine(style='	background-image: url(/assets/programofstudybackground.jpg);	background-position: left top;	background-size: 70%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            h1.display-6.shadow-lg.text-center.text-white Help Pages
+            h5 The Program Of Study
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-info
+      .container
+        button.navbar-toggler.navbar-toggler-right.border-0.p-0(type='button', data-toggle='collapse', data-target='#navbar12')
+          p.navbar-brand.mb-0.text-white
+            i.fa.d-inline.fa-lg.fa-bars
+            |  MENU
+        #navbar12.collapse.navbar-collapse
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link(href='/houme/admin')
+                i.fa.fa-home.fa-fw
+                | ETM
+          ul.navbar-nav.mx-auto
+            li.nav-item
+              a.nav-link(href='/programofstudyadmin/' + id_student)
+                i.fa.fa-book.fa-fw
+                | Program Of Study
+          ul.navbar-nav
+            li.nav-item
+              a.nav-link.text-primary(href='/') 
+                i.fa.fa-power-off.fa-fw
+                | Logout
+    .py-5
+      .container
+        .row
+          .col-md-12
+            h1 Things to be aware of
+            h5 If you ever encounter a problem with the Program Of Study please check that you have adequate placeholders. Placeholders allow for the program of study to be viewable when information is unavailable. Such as a student has a course where there is no pre-requisites. The program works because a placeholder is shown in the pre-requisites box. If there was no pre-requisite then the program would not be able to display wihtout a course having all fields.
+        .row
+          .col-md-6(style='padding-top: 5%;')
+            img(src='/assets/POS/changeadvisor.png', alt='Picture Not Found', width='100%', height='100%')
+          .col-md-6(style='padding-top: 10%;')
+            h1 Change Advisor
+            h5 To change a students advisor. Find the folllowing box. Double click on empty input to display all avaiable advisors in the system.
+        .row
+          .col-md-6(style='padding-top: 5%;')
+            img(src='/assets/POS/changecatalog.png', alt='Picture Not Found', width='70%', height='70%')
+          .col-md-6(style='padding-top: 10%;')
+            h1 Change Catalog
+            h5 To see how a students current courses line up with an existing catalog click on the catalog button to choose from the list of available catalogs.
+        .row
+          .col-md-6(style='padding-top: 10%;')
+            img(src='/assets/POS/gpadate.png', alt='Picture Not Found', width='100%', height='100%')
+          .col-md-6(style='padding-top: 12%;')
+            h1 GPA & Date
+            h5 The system will automatically calculate the students GPA based on grades and credit hours listed in the Program Of Study. The Meeting date will automatically generate to the current date and archive the report based on this date.
+        .row
+          .col-md-6(style='padding-top: 12%;')
+            img(src='/assets/POS/pos_download.png', alt='Picture Not Found', width='50%', height='60%')
+            img(src='/assets/POS/pos_submit.png', alt='Picture Not Found', width='50%', height='60%')
+          .col-md-6(style='padding-top: 10%;')
+            h1 Download & Submit
+            h5 Clicking download will generate a CSV file with all of the students data. Clicking submit will update advisor, semester, grade, course codes; in the system. It will also create a CSV that will be saved into the system and displayed on the archive page for each student. CSV's will be stored based on date and time to the minute.
+        .row
+          .col-md-6(style='padding-top: 12%;')
+            img(src='/assets/POS/pos_semgradecodename.png', alt='Picture Not Found ', width='100%', height='90%')
+          .col-md-6(style='padding-top: 12%;')
+            h1 Semester, Grade, Code, & Name
+            h5 Semester and Grade have drop down boxes for all approved values. Course Code, when empty, can be double clicked to show all avaiable courses. Entering or Changing any of these values will update them when you press submit. The course name will not be updated and can be clicked for an expanded view.
+        .row
+          .col-md-6(style='padding-top: 10%;')
+            img(src='/assets/POS/pos_as.png', alt='Picture Not Found', width='100%', height='90%')
+          .col-md-6(style='padding-top: 10%;')
+            h1 Advanced Standing
+            h5 Advanced Standing can be checked off and the color will change from red to green. When checked you can click submit and the check will stay saved with the student. Hovering over the text will show the requirements for Advanced Standing.
+        
+        .row
+          .col-md-6(style='padding-top: 10%;')
+            img(src='/assets/POS/pos_heading.png', alt='Picture Not Found', width='80%', height='80%')
+          .col-md-6(style='padding-top: 14%;')
+            h1 Headings
+            h5 Headings are matched to courses to display the correct order. These can be changed in the 'Edit Layout' pages.
+
+footer.text-md-left.text-center.p-4.bg-dark.text-light
+  .container
+    .row
+      .col-lg-12  
+    .row
+      .col-md-12
+        p.text-muted.text-center
+          br
+          br
+          | © Copyright 2019 WillCodeForFood - All rights reserved.
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    // Script: Smooth scrolling between anchors in the same page

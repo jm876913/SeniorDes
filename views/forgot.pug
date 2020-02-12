@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // PAGE settings
+    link(rel='icon', href='https://templates.pingendo.com/assets/Pingendo_favicon.ico')
+    title Login Page
+    meta(name='description')
+    meta(name='keywords')
+    // CSS dependencies
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', type='text/css')
+    // Script: Make my navbar transparent when the document is scrolled to top
+    script(src='/js/navbar-ontop.js')
+    // Script: Animated entrance
+    script(src='/js/animate-in.js')
+    link(rel='stylesheet', href='/changepassword.css')
+  body.text-center
+    // Navbar
+    // Cover
+    .d-flex.align-items-center.section-aquamarine.py-5.cover(style='	background-image: url(/assets/circuit-wallpapers-30650-2483188.gif);	background-position: top left;	background-size: 100%;	background-repeat: repeat;')
+      .container
+        .row
+          .col-md-12
+            .row
+              .col-md-12
+                h1.display-1 Password Reset
+            form.p-2(method='POST')
+              .form-group
+                label Email Address
+                input.form-control.form-control-lg(type='text', name='emailtosend', placeholder='Enter Email', required='required')
+                small.form-text.text-muted
+              button.btn.btn-dark.px-5.btn-lg(type='submit') Submit
+    // Parallax section
+    // Speakers
+    // Schedule
+    // Sponsor logos
+    // Call to action
+    // Footer
+    // JavaScript dependencies
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    // Script: Smooth scrolling between anchors in the same page
+    script(src='/js/smooth-scroll.js', style='')

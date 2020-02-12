@@ -1,0 +1,4 @@
+*.vc
+/.vs
+/views/oldprogramplanner.pug
+/TheArchives/*
