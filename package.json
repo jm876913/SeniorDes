@@ -33,7 +33,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "express": "^4.16.4",
-    "express-fileupload": "^1.1.1-alpha.1",
+    "express-fileupload": "^1.1.9",
     "fs": "0.0.1-security",
     "http": "^0.0.0",
     "jshint": "^2.10.2",
