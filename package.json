@@ -5,7 +5,7 @@
   "main": "script.js",
   "dependencies": {
     "async": "^2.6.1",
-    "bcrypt": "^3.0.3",
+    "bcrypt": "^5.0.0",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "ejs": "^2.6.1",
